@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
-
+import "./App.css";
 
 function App() {
-
-  const [city, setCity] = useState("London");
+  const [city, setCity] = useState("Bangalore");
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-  if (city.trim() !== "") {
-    fetchWeather();
-  }
-  },[city]);
+    if (city === "London") {
+      fetchWeather();
+    }
+  }, []); 
 
-
-    useEffect(() => {
+  // Cleanup function demonstration
+  useEffect(() => {
     const timer = setTimeout(() => {
       console.log("Weather data is active");
     }, 2000);
@@ -26,11 +25,14 @@ function App() {
     };
   }, []);
 
-
-
   const fetchWeather = async () => {
-  setLoading(true);
-  setError("");
+    if (!city.trim()) {
+      setError("Please enter a city name");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
 
     try {
       const response = await fetch(
@@ -51,35 +53,65 @@ function App() {
     }
   };
 
-
   return (
-    <div>
+    <div className="App">
       <h1>Weather Information Dashboard</h1>
 
-      <div>
+      <div className="search-container">
         <input
           type="text"
-          placeholder="Enter city name"
+          placeholder="Enter city name (e.g., London, New York)"
           value={city}
           onChange={(e) => setCity(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && fetchWeather()}
         />
-
-      <button onClick={fetchWeather}>Get Weather</button>
+        <button onClick={fetchWeather}>Get Weather</button>
       </div>
 
-      <div>
-        <h2>Weather Details</h2>
+      <div className="weather-section">
+        <h2>Current Weather</h2>
 
-        {loading && <p>Loading weather data...</p>}
+        {loading && <p className="loading-message">Loading weather data...</p>}
 
-        {error && <p>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
 
         {weather && !loading && !error && (
-          <div>
-            <p>Temperature: {weather.main.temp} °C</p>
-            <p>Condition: {weather.weather[0].description}</p>
-            <p>Humidity: {weather.main.humidity} %</p>
-            <p>Wind Speed: {weather.wind.speed} m/s</p>
+          <div className="weather-details">
+            {/* Temperature - Hero Card */}
+            <div className="weather-card temperature-card">
+              <div className="weather-icon">🌡️</div>
+              <div className="weather-content">
+                <p className="weather-label">Temperature</p>
+                <p className="weather-value">{Math.round(weather.main.temp)}°C</p>
+              </div>
+            </div>
+
+            {/* Condition */}
+            <div className="weather-card condition-card">
+              <div className="weather-icon">☁️</div>
+              <div className="weather-content">
+                <p className="weather-label">Condition</p>
+                <p className="weather-value">{weather.weather[0].description}</p>
+              </div>
+            </div>
+
+            {/* Humidity */}
+            <div className="weather-card">
+              <div className="weather-icon">💧</div>
+              <div className="weather-content">
+                <p className="weather-label">Humidity</p>
+                <p className="weather-value">{weather.main.humidity}%</p>
+              </div>
+            </div>
+
+            {/* Wind Speed */}
+            <div className="weather-card">
+              <div className="weather-icon">💨</div>
+              <div className="weather-content">
+                <p className="weather-label">Wind Speed</p>
+                <p className="weather-value">{weather.wind.speed} m/s</p>
+              </div>
+            </div>
           </div>
         )}
       </div>
