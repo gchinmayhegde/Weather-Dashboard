@@ -2,7 +2,7 @@
 It demonstrates the use of `useEffect` for API fetching and side-effect management in React.
 ---
 ## 🔗 Live Demo
-
+https://weather-dashboard-henna-xi.vercel.app/
 ---
 ## ✅ Assignment Objectives Covered
 - Using `useEffect` for handling side effects
