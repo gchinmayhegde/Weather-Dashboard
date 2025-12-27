@@ -1,5 +1,6 @@
 # 🌦️ Weather Information Dashboard
 It demonstrates the use of `useEffect` for API fetching and side-effect management in React.
+It uses openweather API to fetch weather data for Weather dashboard
 ---
 ## 🔗 Live Demo
 https://weather-dashboard-henna-xi.vercel.app/
