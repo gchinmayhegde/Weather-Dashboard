@@ -76,14 +76,19 @@ function App() {
         <button onClick={handleSearch}>Get Weather</button>
       </div>
 
-      {/* Only show weather section after initial load or after user has searched */}
-      {hasSearched && (
+      {/* Show error outside weather section */}
+      {error && (
+        <div className="weather-section">
+          <p className="error-message">{error}</p>
+        </div>
+      )}
+
+      {/* Only show weather section when there's valid weather data or loading */}
+      {(hasSearched && !error) && (
         <div className="weather-section">
           <h2>Current Weather: {city}</h2>
 
           {loading && <p className="loading-message">Loading weather data...</p>}
-
-          {error && <p className="error-message">{error}</p>}
 
           {weather && !loading && !error && (
             <div className="weather-details">
